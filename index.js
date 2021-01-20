@@ -22,31 +22,27 @@ let itemQty = [];
 let itemPrice = [];
 
 
+let cartPrice = [];
 let cartTotal = 0;
-let cartItems = {};
 
+let grandTotal = 0;
 
-let cartQty = 'qty';
 
 function addItem(newItemName,newItemQty,newItemPrice) {
     items.push(newItemName);
     itemQty.push(newItemQty);
     itemPrice.push(newItemPrice);
+    cartPrice.push(newItemPrice*newItemQty);
 }
-function addTotal(qty,price) {
-    let itemprice = qty * price;
-    cartTotal += itemprice;
+function add(num1, num2) {
+    return num1 + num2;
 }
+// function addTotal(qty,price) {
+//     let itemprice = qty * price;
+//     cartTotal += itemprice;
+// }
 
-function addToCart(item,qty,price) {
-    let itemprice = qty * price;
-    cartTotal += itemprice;
-    cartItems[item]={
-        [cartQty]:qty,
-        price,
-        Total : itemprice
-    };
-}
+
 
 
 
@@ -61,14 +57,12 @@ console.log('---------------------------------');
 console.log('The items in your cart are:');
 
 for (let i = 0; i < items.length; i++) {
-    console.log(itemQty[i]+ " - " + items[i] + " for " + itemQty[i]*itemPrice[i] + " (Price: " + itemPrice[i] + ")");
-    addTotal(itemQty[i],itemPrice[i]);
+    console.log(itemQty[i]+ " - " + items[i] + " for " + cartPrice[i] + " (Price: " + itemPrice[i] + ")");
+    //addTotal(itemQty[i],itemPrice[i]);
 }
 console.log('---------------------------------');
-// addToCart(items[0],itemQty[0],itemPrice[0]);
-// addToCart(items[1],itemQty[1],itemPrice[1]);
 
+grandTotal = cartPrice.reduce(add, 0);
 
-
-//console.log(cartItems);
-console.log("Your grand total is " + cartTotal);
+//console.log("Your grand total is " + cartTotal);
+console.log("Your grand total is " + grandTotal);
