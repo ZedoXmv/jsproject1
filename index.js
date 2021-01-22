@@ -1,9 +1,3 @@
-const cartObject = {
-    items: [],
-};
-
-let grandTotal = 0;
-
 class CartClass {
     constructor(){
         this.items = [];
