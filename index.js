@@ -24,6 +24,12 @@ class CartClass {
         }
         return cartTotal;
     }
+    removeItem(name){
+        let removeIndex = this.items.map(function (item) {
+            return item.Name;
+        }).indexOf(name);
+        this.items.splice(removeIndex,1);
+    }
 
 }
 
@@ -33,7 +39,8 @@ cart.addItem('bread',3,24);
 cart.addItem('milk',4,15);
 cart.addItem('pizza',1,100);
 
+cart.removeItem('pizza');
 
 console.log('You have ' + cart.getNumberOfItems() + ' items in your cart');
-console.table(cart.getItems())
+console.table(cart.getItems());
 console.log("Your grand total is " + cart.getTotalAmount());
