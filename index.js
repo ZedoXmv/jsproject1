@@ -49,6 +49,18 @@ class carts {
 			GST
 		});
 	}
+
+	removeItem(ItemCode) {
+		let removeIndex = this._cartItems.map(function (item) {
+			return item['Item Code'];
+		}).indexOf(ItemCode);
+		if (removeIndex === -1) {
+			//No match in cart
+			return false;
+		}
+		this._cartItems.splice(removeIndex, 1);
+	}
+
 	get cartItems()	{ 
 		return this._cartItems; 
 	}
@@ -63,6 +75,7 @@ class carts {
 		return _cartTotal;
 	}
 
+	//GST related
 	get gstTotal() {
 		let _cartGST = 0;
 		for (const item of this._cartItems) {
@@ -76,17 +89,7 @@ class carts {
 	set gstRate(value){
 		this._gstRate = value;
 	}
-	removeItem(ItemCode) {
-		let removeIndex = this._cartItems.map(function (item) {
-			return item['Item Code'];
-		}).indexOf(ItemCode);
-		if (removeIndex === -1) {
-			//No match in cart
-			return false;
-		}
-		this._cartItems.splice(removeIndex, 1);
-	}
-
+	
 }
 
 //console.table(ItemsData);
