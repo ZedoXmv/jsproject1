@@ -14,7 +14,7 @@ ItemsData = [{
 		itemCode: 3,
 		itemName: 'milk',
 		itemRate: 15,
-		GSTApplicable: false
+		GSTApplicable: true
 	},
 	{
 		itemCode: 4,
@@ -24,15 +24,12 @@ ItemsData = [{
 	}
 ];
 
-function displayAllItems() {
-	console.table(ItemsData);
-}
-
-class Carts {
+class carts {
 	constructor() {
 		this._cartItems = [];
-		this.gstRate = 6; //6%
+		this._gstRate = 6; //6% default rate can be changed
 	}
+
 	addItem(ItemCode,Qty) {
 		let itemIndex = ItemsData.map(function(item) { 
 			return item.itemCode; 
@@ -41,7 +38,7 @@ class Carts {
 		let Total =  Qty * ItemsData[itemIndex].itemRate;
 		let GST = 0;
 		if (ItemsData[itemIndex].GSTApplicable) {
-			GST = Math.round((((Total/100)*this.gstRate) + Number.EPSILON) * 100) / 100; //Fancy Math to calculate and round gst to 2 dp
+			GST = Math.round((((Total/100)*this._gstRate) + Number.EPSILON) * 100) / 100; //Fancy Math to calculate and round gst to 2 dp
 		}
 		this._cartItems.push({
 			'Item Code': ItemsData[itemIndex].itemCode,
@@ -52,8 +49,8 @@ class Carts {
 			GST
 		});
 	}
-	get cartItems(){
-		return this._cartItems;
+	get cartItems()	{ 
+		return this._cartItems; 
 	}
 	getNumberOfItems() {
 		return this._cartItems.length
@@ -65,12 +62,19 @@ class Carts {
 		}
 		return _cartTotal;
 	}
+
 	get gstTotal() {
 		let _cartGST = 0;
 		for (const item of this._cartItems) {
 			_cartGST += item.GST;
 		}
 		return _cartGST;
+	}
+	get gstRate(){ 
+		return this._gstRate;
+	}
+	set gstRate(value){
+		this._gstRate = value;
 	}
 	removeItem(ItemCode) {
 		let removeIndex = this._cartItems.map(function (item) {
@@ -85,22 +89,25 @@ class Carts {
 
 }
 
-//displayAllItems();
 //console.table(ItemsData);
-const Cart = new Carts();
+const cart = new carts();
+cart.gstRate = 6;
 
-Cart.addItem(1,12);
-Cart.addItem(2,3);
-Cart.addItem(3,4);
-Cart.addItem(4,1);
+//cartObject.addItem(item code , qty);
+cart.addItem(1,12);
+cart.addItem(2,3);
+cart.addItem(3,4);
+cart.addItem(4,1);
 
-Cart.removeItem(4);
+
+//cartObject.removeItem(item code);
+cart.removeItem(4);
 
 
-console.log('You have ' + Cart.getNumberOfItems() + ' items in your cart');
-console.table(Cart.cartItems);
-console.log(`Subtotal: ${Cart.cartTotal}`);
-console.log(`+${Cart.gstRate}% GST: ${Cart.gstTotal}`);
-console.log(`GrandTotal: ${Cart.cartTotal + Cart.gstTotal}`);
-
-console.log('-------------------------------------------------------');
+console.log('You have ' + cart.getNumberOfItems() + ' items in your cart');
+console.table(cart.cartItems);
+console.log('----------------------------');
+console.log(`Subtotal: ${cart.cartTotal}`);
+console.log(`+${cart.gstRate}% GST: ${cart.gstTotal}`);
+console.log(`GrandTotal: ${cart.cartTotal + cart.gstTotal}`);
+console.log('----------------------------');
