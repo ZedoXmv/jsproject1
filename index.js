@@ -25,20 +25,25 @@ ItemsData = [{
 ];
 
 class carts {
-	constructor() {
-		this._cartItems = [];
-		this._gstRate = 6; //6% default rate can be changed
+	constructor(gstRate = 6, cartItems = []) {
+		this._cartItems = cartItems;
+		this._gstRate = gstRate; //6% default rate can be changed
 	}
 
 	addItem(ItemCode,Qty) {
 		let itemIndex = ItemsData.map(function(item) { 
 			return item.itemCode; 
 		}).indexOf(ItemCode);
+		if(itemIndex === -1){
+			//Invalid Item
+			return console.log('Invalid Item');
+		}
+		//let found = ItemsData.find(item)
 		// console.log(ItemsData[itemIndex]);
 		let Total =  Qty * ItemsData[itemIndex].itemRate;
 		let GST = 0;
 		if (ItemsData[itemIndex].GSTApplicable) {
-			GST = Math.round((((Total/100)*this._gstRate) + Number.EPSILON) * 100) / 100; //Fancy Math to calculate and round gst to 2 dp
+			GST = ((Total/100)*this._gstRate); //.toFixed() displayed
 		}
 		this._cartItems.push({
 			'Item Code': ItemsData[itemIndex].itemCode,
@@ -64,9 +69,6 @@ class carts {
 	get cartItems()	{ 
 		return this._cartItems; 
 	}
-	getNumberOfItems() {
-		return this._cartItems.length
-	}
 	get cartTotal() {
 		let _cartTotal = 0;
 		for (const item of this._cartItems) {
@@ -86,15 +88,15 @@ class carts {
 	get gstRate(){ 
 		return this._gstRate;
 	}
-	set gstRate(value){
-		this._gstRate = value;
-	}
+	// set gstRate(value){
+	// 	this._gstRate = value;
+	// }
 	
 }
 
-//console.table(ItemsData);
-const cart = new carts();
-cart.gstRate = 6;
+console.table(ItemsData);
+const cart = new carts(12);
+// cart.gstRate = 12;
 
 //cartObject.addItem(item code , qty);
 cart.addItem(1,12);
@@ -107,7 +109,7 @@ cart.addItem(4,1);
 cart.removeItem(4);
 
 
-console.log('You have ' + cart.getNumberOfItems() + ' items in your cart');
+console.log('You have ' + cart.cartItems.length + ' items in your cart');
 console.table(cart.cartItems);
 console.log('----------------------------');
 console.log(`Subtotal: ${cart.cartTotal}`);
